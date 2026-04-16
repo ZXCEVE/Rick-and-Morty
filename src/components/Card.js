@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Male } from '../assets/genders/male.svg';
 import { ReactComponent as Female } from '../assets/genders/female.svg';
@@ -20,9 +21,22 @@ export function Card({
   image,
   onClickHandler
 }) {
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
+
   return (
     <StyledCard onClick={onClickHandler}>
-      <CardImg src={image} alt={name} />
+      <ImageContainer>
+        {!imgLoaded && !imgError && <PlaceholderImage />}
+        {imgError && <PlaceholderImage />}
+        <CardImg
+          src={image}
+          alt={name}
+          $loaded={imgLoaded}
+          onLoad={() => setImgLoaded(true)}
+          onError={() => setImgError(true)}
+        />
+      </ImageContainer>
       <CardInfo>
         <CardTitle name={name} gender={gender} />
         <CardStatus status={status} species={species} type={type} />
@@ -64,8 +78,35 @@ const StyledCard = styled.div`
   }
 `;
 
+const PlaceholderImage = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  background: #1a2639;
+`;
+
 const CardImg = styled.img`
   border-radius: 10px 10px 0 0;
+  opacity: ${({ $loaded }) => ($loaded ? 1 : 0)};
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s;
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  background: #1a2639;
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
 `;
 
 const CardInfo = styled.div`

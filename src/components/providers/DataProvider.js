@@ -5,7 +5,8 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState
+  useState,
+  useRef
 } from 'react';
 
 function getInitialPage() {
@@ -49,6 +50,7 @@ export function DataProvider({ children }) {
   const [apiURL, setApiURL] = useState(() =>
     buildApiURL(initialPage, initialFilters)
   );
+  const requestIdRef = useRef(0);
 
   const updateURL = (page, currentFilters) => {
     const url = new URL(window.location.href);
@@ -94,17 +96,22 @@ export function DataProvider({ children }) {
   }, []);
 
   const fetchData = useCallback(async (url) => {
+    const currentRequestId = requestIdRef.current + 1;
+    requestIdRef.current = currentRequestId;
+
     setIsFetching(true);
     setIsError(false);
 
     axios
       .get(url)
       .then(({ data }) => {
+        if (currentRequestId !== requestIdRef.current) return;
         setIsFetching(false);
         setCharacters(data.results);
         setInfo(data.info);
       })
       .catch((e) => {
+        if (currentRequestId !== requestIdRef.current) return;
         setIsFetching(false);
         setIsError(true);
         console.error(e);

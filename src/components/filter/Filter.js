@@ -15,13 +15,13 @@ const Icon = (props) => (
   />
 );
 
-const ChevronIcon = ({ isOpen }) => (
+const ChevronIcon = ({ isOpen, ...props }) => (
   <Icon
-    isOpen={isOpen}
     style={{
       transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
       transition: 'transform 0.2s ease'
     }}
+    {...props}
   >
     <polyline points="6 9 12 15 18 9" />
   </Icon>
