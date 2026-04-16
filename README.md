@@ -6,7 +6,10 @@
 ```bash
 npm install --legacy-peer-deps
 ```
-без `npm audit fix --force`
+```bash
+npm audit fix
+```
+без `--force`
 
 ### Запуск сайта
 
