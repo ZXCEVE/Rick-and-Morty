@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Male } from '../assets/genders/male.svg';
 import { ReactComponent as Female } from '../assets/genders/female.svg';
@@ -24,6 +24,9 @@ export function Card({
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
 
+  const handleLoad = useCallback(() => setImgLoaded(true), []);
+  const handleError = useCallback(() => setImgError(true), []);
+
   return (
     <StyledCard onClick={onClickHandler}>
       <ImageContainer>
@@ -33,8 +36,8 @@ export function Card({
           src={image}
           alt={name}
           $loaded={imgLoaded}
-          onLoad={() => setImgLoaded(true)}
-          onError={() => setImgError(true)}
+          onLoad={handleLoad}
+          onError={handleError}
         />
       </ImageContainer>
       <CardInfo>
