@@ -28,8 +28,14 @@ const ChevronIcon = ({ isOpen }) => (
 );
 
 const CloseIcon = () => {
-  const handleMouseEnter = (e) => (e.currentTarget.style.stroke = '#ff5152');
-  const handleMouseLeave = (e) => (e.currentTarget.style.stroke = '#8a9aba');
+  const handleMouseEnter = useCallback(
+    (e) => (e.currentTarget.style.stroke = '#ff5152'),
+    []
+  );
+  const handleMouseLeave = useCallback(
+    (e) => (e.currentTarget.style.stroke = '#8a9aba'),
+    []
+  );
 
   return (
     <Icon
