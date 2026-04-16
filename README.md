@@ -16,4 +16,4 @@ npm run start
 
 
 ## Ссылка на онлайн версию (размещено через vercel)
-[Rick and Morty]([https://github.com/ZXCEVE/Rick-and-Morty](https://rick-and-morty-test-five-mu.vercel.app/?page=1)).
+[Rick and Morty](https://github.com/ZXCEVE/Rick-and-Morty](https://rick-and-morty-test-five-mu.vercel.app/?page=1).
