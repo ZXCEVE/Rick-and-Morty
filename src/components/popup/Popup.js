@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { PopupEpisodes } from './PopupEpisodes';
 import { PopupHeader } from './PopupHeader';
@@ -17,16 +17,19 @@ export function Popup({ settings: { visible, content = {} }, setSettings }) {
     episode: episodes
   } = content;
 
-  function togglePopup(e) {
-    if (e.currentTarget !== e.target) {
-      return;
-    }
+  const handleTogglePopup = useCallback(
+    (e) => {
+      if (e.currentTarget !== e.target) {
+        return;
+      }
 
-    setSettings((prevState) => ({
-      ...prevState,
-      visible: !prevState.visible
-    }));
-  }
+      setSettings((prevState) => ({
+        ...prevState,
+        visible: !prevState.visible
+      }));
+    },
+    [setSettings]
+  );
 
   useEffect(() => {
     function handleEsc(e) {
@@ -50,9 +53,9 @@ export function Popup({ settings: { visible, content = {} }, setSettings }) {
   }, [visible, setSettings]);
 
   return (
-    <PopupContainer $visible={visible} onClick={togglePopup}>
+    <PopupContainer $visible={visible} onClick={handleTogglePopup}>
       <StyledPopup>
-        <CloseIcon onClick={togglePopup} />
+        <CloseIcon onClick={handleTogglePopup} />
 
         <PopupHeader
           name={name}

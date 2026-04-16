@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import Select, { components } from 'react-select';
 import { useData } from '../providers';
 
-const Icon = ({ isOpen, ...props }) => (
+const Icon = (props) => (
   <svg
     width="16"
     height="16"
@@ -27,18 +27,23 @@ const ChevronIcon = ({ isOpen }) => (
   </Icon>
 );
 
-const CloseIcon = () => (
-  <Icon
-    width="14"
-    height="14"
-    style={{ cursor: 'pointer' }}
-    onMouseEnter={(e) => (e.currentTarget.style.stroke = '#ff5152')}
-    onMouseLeave={(e) => (e.currentTarget.style.stroke = '#8a9aba')}
-  >
-    <line x1="18" y1="6" x2="6" y2="18" />
-    <line x1="6" y1="6" x2="18" y2="18" />
-  </Icon>
-);
+const CloseIcon = () => {
+  const handleMouseEnter = (e) => (e.currentTarget.style.stroke = '#ff5152');
+  const handleMouseLeave = (e) => (e.currentTarget.style.stroke = '#8a9aba');
+
+  return (
+    <Icon
+      width="14"
+      height="14"
+      style={{ cursor: 'pointer' }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </Icon>
+  );
+};
 
 const DropdownIndicator = (props) => (
   <components.DropdownIndicator {...props}>
@@ -147,6 +152,15 @@ export function CharacterFilter() {
     placeholder: type.charAt(0).toUpperCase() + type.slice(1)
   });
 
+  const handleNameChange = useCallback(
+    (e) => handleFilterChange('name', e.target.value),
+    [handleFilterChange]
+  );
+  const handleTypeChange = useCallback(
+    (e) => handleFilterChange('type', e.target.value),
+    [handleFilterChange]
+  );
+
   return (
     <FilterContainer>
       <StyledSelect {...selectProps('status', STATUS_OPTIONS)} />
@@ -155,12 +169,12 @@ export function CharacterFilter() {
       <Input
         placeholder="Name"
         value={localFilters.name}
-        onChange={(e) => handleFilterChange('name', e.target.value)}
+        onChange={handleNameChange}
       />
       <Input
         placeholder="Type"
         value={localFilters.type}
-        onChange={(e) => handleFilterChange('type', e.target.value)}
+        onChange={handleTypeChange}
       />
       <ButtonGroup>
         <Button $variant="primary" onClick={applyFilters}>
